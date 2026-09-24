@@ -1,6 +1,7 @@
 /* ============================================================================
    Chess Master - Web Application Stylesheet
    Designed with Glassmorphism, Dynamic Accent Highlights, & Premium Dark Aesthetics
+   Mobile & Touch Responsive Layout Engine
    ============================================================================ */
 
 :root {
@@ -56,6 +57,8 @@
   padding: 0;
   user-select: none;
   -webkit-user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -70,8 +73,8 @@ body {
 
 /* --- App Layout Header --- */
 .app-header {
-  height: 64px;
-  padding: 0 2rem;
+  height: 60px;
+  padding: 0 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -84,16 +87,16 @@ body {
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .brand-icon {
-  font-size: 28px;
+  font-size: 26px;
   filter: drop-shadow(0 0 8px var(--accent-gold-glow));
 }
 
 .brand-title {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 800;
   letter-spacing: 0.5px;
   background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
@@ -102,7 +105,7 @@ body {
 }
 
 .cpp-badge {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   padding: 3px 8px;
   border-radius: 6px;
@@ -115,7 +118,7 @@ body {
 .header-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 /* --- Main Container --- */
@@ -124,7 +127,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 1.25rem;
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
@@ -224,24 +227,6 @@ body {
   box-shadow: 0 4px 14px var(--accent-blue-glow);
 }
 
-.ds-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  margin-top: 4px;
-}
-
-.ds-tag {
-  font-size: 0.75rem;
-  padding: 4px 10px;
-  border-radius: 12px;
-  background: rgba(245, 158, 11, 0.15);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  color: var(--accent-gold);
-  font-weight: 600;
-}
-
 .btn-primary {
   background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   color: #fff;
@@ -264,15 +249,18 @@ body {
 .btn-secondary {
   background: rgba(255, 255, 255, 0.08);
   color: var(--text-main);
-  padding: 10px 18px;
+  padding: 10px 16px;
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
   font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
 }
 
 .btn-secondary:hover {
@@ -289,36 +277,34 @@ body {
   justify-content: center;
 }
 
-@media (max-width: 1024px) {
-  .game-layout {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
 /* --- Chessboard Area --- */
 .board-container {
   display: flex;
   flex-direction: column;
   gap: 12px;
   align-items: center;
+  width: 100%;
 }
 
 .board-wrapper {
   position: relative;
   background: #111;
-  padding: 12px;
+  padding: 10px;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-main);
   border: 1px solid var(--border-glass);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .chessboard {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  width: clamp(320px, 72vh, 640px);
-  height: clamp(320px, 72vh, 640px);
+  width: min(calc(100vw - 36px), 70vh, 580px);
+  height: min(calc(100vw - 36px), 70vh, 580px);
+  aspect-ratio: 1 / 1;
   border-radius: 4px;
   overflow: hidden;
   box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
@@ -377,10 +363,10 @@ body {
 
 /* Piece Glyphs */
 .piece {
-  font-size: clamp(2rem, 8.5vh, 4rem);
+  font-size: clamp(1.8rem, 8.5vw, 3.8rem);
   line-height: 1;
   transition: transform 0.1s ease;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.4));
   pointer-events: none;
 }
 
@@ -401,7 +387,7 @@ body {
 /* Square Coordinates */
 .coord {
   position: absolute;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
   pointer-events: none;
   opacity: 0.7;
@@ -419,13 +405,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-}
-
-@media (max-width: 1024px) {
-  .side-panel {
-    width: 100%;
-    max-width: 640px;
-  }
 }
 
 .player-card {
@@ -463,6 +442,7 @@ body {
   font-size: 1.5rem;
   font-weight: bold;
   border: 2px solid var(--border-glass);
+  flex-shrink: 0;
 }
 
 .avatar.white { background: #e2e8f0; color: #1e293b; }
@@ -682,4 +662,202 @@ body {
 
 .modal-buttons button {
   flex: 1;
+}
+
+/* ============================================================================
+   MOBILE & RESPONSIVE BREAKPOINTS
+   ============================================================================ */
+
+/* Tablet & Mobile Layout (<= 1024px) */
+@media (max-width: 1024px) {
+  .app-header {
+    padding: 0 1rem;
+  }
+
+  .app-container {
+    padding: 0.75rem 0.5rem 1.5rem 0.5rem;
+  }
+
+  /* Transform .game-layout & .side-panel for Mobile Chess Ordering */
+  .game-layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .side-panel {
+    display: contents; /* Unwraps children to allow mobile flex/grid ordering */
+  }
+
+  #card-black {
+    order: 1;
+    width: 100%;
+    max-width: 580px;
+  }
+
+  .board-container {
+    order: 2;
+  }
+
+  #card-white {
+    order: 3;
+    width: 100%;
+    max-width: 580px;
+  }
+
+  #game-status {
+    order: 4;
+    width: 100%;
+    max-width: 580px;
+  }
+
+  .control-bar {
+    order: 5;
+    width: 100%;
+    max-width: 580px;
+  }
+
+  .history-card {
+    order: 6;
+    width: 100%;
+    max-width: 580px;
+    height: 180px; /* Reduced height on mobile */
+  }
+}
+
+/* Small Mobile Screens (<= 600px) */
+@media (max-width: 600px) {
+  .app-header {
+    height: 54px;
+    padding: 0 0.6rem;
+  }
+
+  .brand {
+    gap: 6px;
+  }
+
+  .brand-icon {
+    font-size: 22px;
+  }
+
+  .brand-title {
+    font-size: 1.05rem;
+  }
+
+  .cpp-badge {
+    display: none; /* Hide badge on very small screens to fit buttons */
+  }
+
+  .header-controls {
+    gap: 6px;
+  }
+
+  .btn-secondary {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  /* Main Menu Mobile */
+  .menu-card {
+    padding: 1.4rem 1rem;
+    gap: 1.2rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .menu-header h1 {
+    font-size: 1.7rem;
+  }
+
+  .menu-header p {
+    font-size: 0.85rem;
+  }
+
+  .option-grid {
+    grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+    gap: 6px;
+  }
+
+  .opt-btn {
+    padding: 8px 6px;
+    font-size: 0.85rem;
+  }
+
+  .btn-primary {
+    padding: 14px 20px;
+    font-size: 1rem;
+  }
+
+  /* Player Cards Mobile */
+  .player-card {
+    padding: 0.6rem 0.8rem;
+    border-radius: var(--radius-md);
+  }
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
+  }
+
+  .player-details h3 {
+    font-size: 0.88rem;
+  }
+
+  .captured-pieces {
+    font-size: 0.92rem;
+    min-height: 18px;
+    letter-spacing: -1px;
+  }
+
+  .clock {
+    font-size: 1.25rem;
+    padding: 4px 10px;
+  }
+
+  /* Board Padding & Glyph Sizing on Mobile */
+  .board-wrapper {
+    padding: 6px;
+    border-radius: var(--radius-md);
+  }
+
+  .piece {
+    font-size: clamp(1.5rem, 8.8vw, 2.6rem);
+  }
+
+  .coord {
+    font-size: 0.58rem;
+  }
+
+  .coord.rank { top: 1px; left: 2px; }
+  .coord.file { bottom: 1px; right: 2px; }
+
+  /* Status & Control Bar Mobile */
+  .status-bar {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+  }
+
+  .control-bar button {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+  }
+
+  /* Promo Modal Mobile */
+  .modal-card {
+    padding: 1.4rem 1rem;
+    gap: 1.1rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .promo-options {
+    gap: 10px;
+  }
+
+  .promo-btn {
+    width: 56px;
+    height: 56px;
+    font-size: 2.2rem;
+    border-radius: var(--radius-md);
+  }
 }

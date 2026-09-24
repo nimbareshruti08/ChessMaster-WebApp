@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" data-board-theme="wood">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chess Master — C++ Web Application</title>
+  <meta name="description" content="A complete, fully playable Web Application version of Chess Master built on C++ engine architecture with 2D Board Array, dynamic MoveLinkedList history, MoveStack undo snapshots, and minimax AI search with alpha-beta pruning.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-icon">♚</span>
+      <span class="brand-title">Chess Master</span>
+      <span class="cpp-badge">C++ Engine</span>
+    </div>
+
+    <div class="header-controls">
+      <a id="github-btn" href="https://github.com/nimbareshruti08/ChessMaster-WebApp" target="_blank" rel="noopener noreferrer" class="btn-secondary" title="View GitHub Repository" style="text-decoration: none;">
+        🐙 GitHub
+      </a>
+      <button id="theme-btn" class="btn-secondary" title="Switch Board Theme">
+        🎨 Theme
+      </button>
+      <button id="sound-btn" class="btn-secondary" title="Toggle Sound FX">
+        🔊 Sound: ON
+      </button>
+    </div>
+  </header>
+
+  <!-- App Body Container -->
+  <main class="app-container">
+
+    <!-- 1. MAIN MENU SCREEN -->
+    <section id="menu-screen" class="screen active">
+      <div class="menu-card">
+        <div class="menu-header">
+          <h1>Chess Master</h1>
+          <p>Web Application powered by C++ Engine Architecture</p>
+        </div>
+
+        <!-- Mode Picker -->
+        <div class="menu-section">
+          <label>Game Mode</label>
+          <div class="option-grid" id="mode-picker">
+            <button class="opt-btn selected" data-mode="1">
+              <span>🤖 vs Computer</span>
+            </button>
+            <button class="opt-btn" data-mode="0">
+              <span>👥 2-Player Local</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- AI Difficulty (visible if mode == vs Computer) -->
+        <div class="menu-section" id="difficulty-section">
+          <label>AI Difficulty</label>
+          <div class="option-grid" id="difficulty-picker">
+            <button class="opt-btn" data-diff="0">
+              <span>🌱 Easy</span>
+              <small style="font-size:0.75rem; color:var(--text-muted)">Random Moves</small>
+            </button>
+            <button class="opt-btn selected" data-diff="1">
+              <span>⚔️ Medium</span>
+              <small style="font-size:0.75rem; color:var(--text-muted)">Greedy 1-Ply</small>
+            </button>
+            <button class="opt-btn" data-diff="2">
+              <span>🧠 Hard</span>
+              <small style="font-size:0.75rem; color:var(--text-muted)">Minimax Depth 3</small>
+            </button>
+          </div>
+        </div>
+
+        <!-- Timer Picker -->
+        <div class="menu-section">
+          <label>Chess Clock (Minutes)</label>
+          <div class="option-grid" id="timer-picker">
+            <button class="opt-btn" data-minutes="1">1 Min</button>
+            <button class="opt-btn" data-minutes="3">3 Mins</button>
+            <button class="opt-btn" data-minutes="5">5 Mins</button>
+            <button class="opt-btn selected" data-minutes="10">10 Mins</button>
+            <button class="opt-btn" data-minutes="15">15 Mins</button>
+          </div>
+        </div>
+
+        <!-- Start Button -->
+        <button id="start-btn" class="btn-primary">
+          ▶ Start Game
+        </button>
+      </div>
+    </section>
+
+
+    <!-- 2. GAME SCREEN -->
+    <section id="game-screen" class="screen">
+      <div class="game-layout">
+
+        <!-- Chessboard Container -->
+        <div class="board-container">
+          <div class="board-wrapper">
+            <div id="chessboard" class="chessboard"></div>
+          </div>
+        </div>
+
+        <!-- Side Panel -->
+        <aside class="side-panel">
+
+          <!-- Black Player Card -->
+          <div class="player-card" id="card-black">
+            <div class="player-info">
+              <div class="avatar black">♚</div>
+              <div class="player-details">
+                <h3 id="name-black">Black (Computer)</h3>
+                <div class="captured-pieces" id="captured-black"></div>
+              </div>
+            </div>
+            <div class="clock" id="clock-black">10:00</div>
+          </div>
+
+          <!-- Real-Time Game Status -->
+          <div class="status-bar" id="game-status">
+            White's Turn
+          </div>
+
+          <!-- White Player Card -->
+          <div class="player-card active-turn" id="card-white">
+            <div class="player-info">
+              <div class="avatar white">♔</div>
+              <div class="player-details">
+                <h3 id="name-white">White (You)</h3>
+                <div class="captured-pieces" id="captured-white"></div>
+              </div>
+            </div>
+            <div class="clock" id="clock-white">10:00</div>
+          </div>
+
+          <!-- History Panel (MoveLinkedList) -->
+          <div class="history-card">
+            <div class="history-header">
+              <h4>Move History</h4>
+              <span class="ds-tag-mini">MoveLinkedList</span>
+            </div>
+            <div class="history-list" id="history-list"></div>
+          </div>
+
+          <!-- Game Controls -->
+          <div class="control-bar">
+            <button id="undo-btn" class="btn-secondary" title="Undo Last Move (U)">
+              ↩ Undo (U)
+            </button>
+            <button id="newgame-btn" class="btn-secondary" title="Start New Game (N)">
+              🔄 New Game
+            </button>
+            <button id="menu-btn" class="btn-secondary" title="Back to Main Menu (Esc)">
+              🏠 Menu
+            </button>
+          </div>
+
+        </aside>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODALS -->
+
+  <!-- Pawn Promotion Modal -->
+  <div id="promo-modal" class="modal-overlay">
+    <div class="modal-card">
+      <h2>Promote Pawn</h2>
+      <p style="color:var(--text-muted)">Select a piece for promotion:</p>
+      <div class="promo-options" id="promo-options">
+        <button class="promo-btn" data-piece="5" title="Queen">♛</button>
+        <button class="promo-btn" data-piece="4" title="Rook">♜</button>
+        <button class="promo-btn" data-piece="3" title="Bishop">♝</button>
+        <button class="promo-btn" data-piece="2" title="Knight">♞</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Over Modal -->
+  <div id="gameover-modal" class="modal-overlay">
+    <div class="modal-card">
+      <h1 id="gameover-title" style="font-size:2rem; color:var(--accent-gold)">Checkmate!</h1>
+      <p id="gameover-desc" style="font-size:1.1rem; font-weight:600">White Wins!</p>
+      <div class="modal-buttons">
+        <button id="rematch-btn" class="btn-primary">🔄 Play Again</button>
+        <button id="gameover-menu-btn" class="btn-secondary">🏠 Main Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirm-modal" class="modal-overlay">
+    <div class="modal-card">
+      <h2 id="confirm-title">Start New Game?</h2>
+      <p id="confirm-desc" style="color:var(--text-muted)">The current game progress will be lost.</p>
+      <div class="modal-buttons">
+        <button id="confirm-yes" class="btn-primary">Yes, Proceed</button>
+        <button id="confirm-no" class="btn-secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

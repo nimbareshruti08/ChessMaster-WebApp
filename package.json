@@ -1,0 +1,26 @@
+{
+  "name": "chessmaster-webapp",
+  "version": "1.0.0",
+  "description": "A complete, fully playable Web Application version of Chess Master built on C++ Engine architecture.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "chess",
+    "cpp",
+    "webassembly",
+    "linked-list",
+    "stack",
+    "2d-array",
+    "minimax",
+    "alpha-beta-pruning"
+  ],
+  "author": "Antigravity AI",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
